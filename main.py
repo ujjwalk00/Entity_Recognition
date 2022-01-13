@@ -4,6 +4,7 @@ from spacy import displacy
 import streamlit.components.v1 as components
 import pandas as pd
 
+
 nlp = spacy.load('en_core_web_lg')
 
 
