@@ -4,7 +4,6 @@ from spacy import displacy
 import streamlit.components.v1 as components
 import pandas as pd
 
-
 nlp = spacy.load('en_core_web_lg')
 
 
@@ -24,13 +23,13 @@ if uploaded_file:
     st.write("Filetype: ",filetype)
     if filetype == "xlsx":
         df = pd.read_excel("Assets//"+uploaded_file.name)
-st.dataframe(df)
-sentence = st.text_input('Input your sentence here:') 
-article = nlp(sentence)
-html_text = displacy.render(article, style='ent')
-components.html(html_text,
-height=600
-)
+        st.dataframe(df)
+        sentence = st.text_input('Input your sentence here:') 
+        article = nlp(sentence)
+        html_text = displacy.render(article, style='ent')
+        components.html(html_text,
+        height=600
+        )
 
 
     
