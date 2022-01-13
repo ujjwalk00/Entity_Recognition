@@ -1,10 +1,17 @@
 import streamlit as st
+import spacy
 from spacy import displacy
 import streamlit.components.v1 as components
 import pandas as pd
-import en_core_web_lg
-nlp = en_core_web_lg.load()
 
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+install("en_core_web_lg")
+nlp = spacy.load('en_core_web_lg')
 
 
 # Create a page dropdown 
