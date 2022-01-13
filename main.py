@@ -3,14 +3,11 @@ import spacy
 from spacy import displacy
 import streamlit.components.v1 as components
 import pandas as pd
+import spacy.cli
 
-import subprocess
-import sys
+spacy.cli.download("en_core_web_lg")
 
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
-install("en_core_web_lg")
 nlp = spacy.load('en_core_web_lg')
 
 
