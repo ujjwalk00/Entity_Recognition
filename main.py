@@ -12,34 +12,45 @@ from IPython.core.display import display, HTML
 nlp = spacy.load('en_core_web_lg')
 
 # Create a page dropdown 
-#page = st.selectbox("Choose your page", ["Page 1", "Page 2", "Page 3"]) 
+page = st.selectbox("Choose your page", ["Page 1", "Page 2", "Page 3"]) 
     # Display details of page 1elif page == "Page 2":
     # Display details of page 2elif page == "Page 3":
     # Display details of page 3
 
 
-#if page == "Page 1":
-label = "select a file please"
-uploaded_file = st.file_uploader(label, type=None, accept_multiple_files=False, key=None, help=None, on_change=None, args=None, kwargs=None)
-if uploaded_file:
-    st.write("Filename: ", uploaded_file.name)
-    filetype = uploaded_file.name.split(".")[-1]
-    st.write("Filetype: ",filetype)
-    if filetype == "xlsx":
-        df = pd.read_excel("Assets//"+uploaded_file.name)
-        st.dataframe(df)
-        sentence = st.text_input('Input your sentence here:') 
-        article = nlp(sentence)
-        html_text = displacy.render(article, style='ent')
-        components.html(html_text,
-        height=600
-        )
+if page == "Page 1":
+    label = "select a file please"
+    uploaded_file = st.file_uploader(label, type=None, accept_multiple_files=False, key=None, help=None, on_change=None, args=None, kwargs=None)
+    if uploaded_file:
+        st.write("Filename: ", uploaded_file.name)
+        filetype = uploaded_file.name.split(".")[-1]
+        st.write("Filetype: ",filetype)
+        if filetype == "xlsx":
+            df = pd.read_excel("Assets//"+uploaded_file.name)
+            st.dataframe(df)
+            sentence = st.text_input('Input your sentence here:') 
+            article = nlp(sentence)
+            html_text = displacy.render(article, style='ent')
+            components.html(html_text,
+            height=600
+            )
 
-        # Add selectbox in streamlit
+            # Add selectbox in streamlit
+            
+
+if page == "Page 2":
+    label = "select a file please"
+    uploaded_file = st.file_uploader(label, type=None, accept_multiple_files=False, key=None, help=None, on_change=None, args=None, kwargs=None)
+    if uploaded_file:
+
+        df = pd.read_excel("Assets//"+uploaded_file.name)
+
         option = st.selectbox(
-        'What category do you want to test?',
-        df.categories.unique())
-        st.write('You selected:', option)
+                'What category do you want to test?',
+                df.categories.unique())
+        option_clean = option.replace("['", "").replace("']", "")
+        
+        st.write('You selected:', option_clean)
 
         data = df[df.categories==(option)]['text']
         entity_set = []
@@ -48,31 +59,42 @@ if uploaded_file:
             for ne in article.ents:
                 if ne.label_ == 'ORG':
                     entity_set.append(ne.text)
-        input_df = pd.DataFrame({'source':entity_set, 'relation':['has article related to']* len(entity_set), 'target': option}).drop_duplicates()
+        input_df = pd.DataFrame({'source':entity_set, 'relation':['has article related to']* len(entity_set), 'target': option_clean}).drop_duplicates()
         st.dataframe(input_df)
 
 
 
-        kg_df = input_df
+        kg_df = input_df 
 
         def graph(kg_df):
-            G=nx.from_pandas_edgelist(kg_df.head(20 +1), "source", "target", 
+            G=nx.from_pandas_edgelist(kg_df.head(20+1), "source", "target", 
                                 edge_attr=True, create_using=nx.MultiDiGraph())
             return G
 
         G= graph(kg_df)
 
 
+        nodes_list = []
+        edges_list = []
+        nodes_list.append({"id": option_clean, "label": option_clean, "shape": "dot", "size": 10})
+        for i in range(21):
+            nodes_list.append({"id": kg_df.iloc[i,0], "label": kg_df.iloc[i,0], "shape": "dot", "size": 10})
+            edges_list.append({"from": kg_df.iloc[i,0], "relation":kg_df.iloc[i,1], "to": option_clean, "weight": 1})
+        
+        
+        st.write(len([{"id": "NSW", "label": "NSW", "shape": "dot", "size": 10}, {"id": "Ship", "label": "Ship", "shape": "dot", "size": 10}, {"id": "the Arbitration  Commission", "label": "the Arbitration  Commission", "shape": "dot", "size": 10}, {"id": "the NSW Trades", "label": "the NSW Trades", "shape": "dot", "size": 10}, {"id": "Labour Council", "label": "Labour Council", "shape": "dot", "size": 10}, {"id": "Flevoland", "label": "Flevoland", "shape": "dot", "size": 10}, {"id": "Graan Elevator Mij", "label": "Graan Elevator Mij", "shape": "dot", "size": 10}, {"id": "Todd Shipyards Corp", "label": "Todd Shipyards Corp", "shape": "dot", "size": 10}, {"id": "Pacific Coast  Metal Trades District Council", "label": "Pacific Coast  Metal Trades District Council", "shape": "dot", "size": 10}, {"id": "Galveston Division", "label": "Galveston Division", "shape": "dot", "size": 10}, {"id": "the Galveston Metal Trades Council", "label": "the Galveston Metal Trades Council", "shape": "dot", "size": 10}, {"id": "Seattle Division", "label": "Seattle Division", "shape": "dot", "size": 10}, {"id": "The Pacific Coast Council", "label": "The Pacific Coast Council", "shape": "dot", "size": 10}, {"id": "The Labour Council", "label": "The Labour Council", "shape": "dot", "size": 10}, {"id": "the Australian Council of  Trade Unions", "label": "the Australian Council of  Trade Unions", "shape": "dot", "size": 10}, {"id": "ACTU", "label": "ACTU", "shape": "dot", "size": 10}, {"id": "Velayati", "label": "Velayati", "shape": "dot", "size": 10}, {"id": "Kuwaiti", "label": "Kuwaiti", "shape": "dot", "size": 10}, {"id": "Foreign Ministry", "label": "Foreign Ministry", "shape": "dot", "size": 10}, {"id": "the Foreign Ministry", "label": "the Foreign Ministry", "shape": "dot", "size": 10}, {"id": "The Iranian News Agency", "label": "The Iranian News Agency", "shape": "dot", "size": 10}, {"id": "IRNA", "label": "IRNA", "shape": "dot", "size": 10}]))
+        st.write(len([{"from": "NSW", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Arbitration  Commission", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the NSW Trades", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Labour Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Flevoland", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Graan Elevator Mij", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Todd Shipyards Corp", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Pacific Coast  Metal Trades District Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Galveston Division", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Galveston Metal Trades Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Seattle Division", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Pacific Coast Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Labour Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Australian Council of  Trade Unions", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "ACTU", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Velayati", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Kuwaiti", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Foreign Ministry", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Foreign Ministry", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Iranian News Agency", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "IRNA", "relation": "has article related to", "to": "Ship", "weight": 1}]))
+        st.write(len(nodes_list))
+        st.write(len(edges_list))
+
+        st.write(str(nodes_list))
+        st.write(str(edges_list))
 
 
-        g4 = net.Network(height='400px', width='50%',notebook=True,heading='Graph :)')
-        g4.from_nx(G)
 
-        g4.show_buttons(filter_=['physics'])
-        g4.show('graph.html')
-        display(HTML('graph.html')) 
 
-        components.html("""
+
+        html_str = """
         <html>
         <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
@@ -127,8 +149,8 @@ if uploaded_file:
                 
 
                 // parsing and collecting nodes and edges from the python
-                nodes = new vis.DataSet([{"id": "NSW", "label": "NSW", "shape": "dot", "size": 10}, {"id": "Ship", "label": "Ship", "shape": "dot", "size": 10}, {"id": "the Arbitration  Commission", "label": "the Arbitration  Commission", "shape": "dot", "size": 10}, {"id": "the NSW Trades", "label": "the NSW Trades", "shape": "dot", "size": 10}, {"id": "Labour Council", "label": "Labour Council", "shape": "dot", "size": 10}, {"id": "Flevoland", "label": "Flevoland", "shape": "dot", "size": 10}, {"id": "Graan Elevator Mij", "label": "Graan Elevator Mij", "shape": "dot", "size": 10}, {"id": "Todd Shipyards Corp", "label": "Todd Shipyards Corp", "shape": "dot", "size": 10}, {"id": "Pacific Coast  Metal Trades District Council", "label": "Pacific Coast  Metal Trades District Council", "shape": "dot", "size": 10}, {"id": "Galveston Division", "label": "Galveston Division", "shape": "dot", "size": 10}, {"id": "the Galveston Metal Trades Council", "label": "the Galveston Metal Trades Council", "shape": "dot", "size": 10}, {"id": "Seattle Division", "label": "Seattle Division", "shape": "dot", "size": 10}, {"id": "The Pacific Coast Council", "label": "The Pacific Coast Council", "shape": "dot", "size": 10}, {"id": "The Labour Council", "label": "The Labour Council", "shape": "dot", "size": 10}, {"id": "the Australian Council of  Trade Unions", "label": "the Australian Council of  Trade Unions", "shape": "dot", "size": 10}, {"id": "ACTU", "label": "ACTU", "shape": "dot", "size": 10}, {"id": "Velayati", "label": "Velayati", "shape": "dot", "size": 10}, {"id": "Kuwaiti", "label": "Kuwaiti", "shape": "dot", "size": 10}, {"id": "Foreign Ministry", "label": "Foreign Ministry", "shape": "dot", "size": 10}, {"id": "the Foreign Ministry", "label": "the Foreign Ministry", "shape": "dot", "size": 10}, {"id": "The Iranian News Agency", "label": "The Iranian News Agency", "shape": "dot", "size": 10}, {"id": "IRNA", "label": "IRNA", "shape": "dot", "size": 10}]);
-                edges = new vis.DataSet([{"from": "NSW", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Arbitration  Commission", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the NSW Trades", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Labour Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Flevoland", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Graan Elevator Mij", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Todd Shipyards Corp", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Pacific Coast  Metal Trades District Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Galveston Division", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Galveston Metal Trades Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Seattle Division", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Pacific Coast Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Labour Council", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Australian Council of  Trade Unions", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "ACTU", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Velayati", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Kuwaiti", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "Foreign Ministry", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "the Foreign Ministry", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "The Iranian News Agency", "relation": "has article related to", "to": "Ship", "weight": 1}, {"from": "IRNA", "relation": "has article related to", "to": "Ship", "weight": 1}]);
+                nodes = new vis.DataSet(""" +str(nodes_list)+""");
+                edges = new vis.DataSet(""" +str(edges_list)+""");
 
                 // adding nodes and edges to the graph
                 data = {nodes: nodes, edges: edges};
@@ -182,6 +204,9 @@ if uploaded_file:
         </script>
         </body>
         </html>
-            """,
+            """
+
+        components.html(html_str,
             height=1200,width=700)
+
 
