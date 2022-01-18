@@ -49,77 +49,77 @@ st.write(str(edges_list))
 nodes = []
 edges = []
 
-# nodes.append(
-#     Node(id=option_clean,
-#             label=option_clean,
-#             size=800
-#             )
-# )
+nodes.append(
+    Node(id=option_clean,
+            label=option_clean,
+            size=800
+            )
+)
 
-# for i in range(8):
-#     nodes.append(
-#         Node(id=input_df.iloc[i, 0],
-#              label=input_df.iloc[i, 0],
-#              size=800
-#              )
-#     )
-
-#     edges.append(Edge(source=input_df.iloc[i, 0],
-#                   label="connected to ",
-#                   target=option_clean,
-#                   type="CURVE_SMOOTH",
-#                   strokeWidth=1.5
-
-#                   )
-#              )  
-
-
-# config = Config(width=800,
-#                 height=800,
-#                 directed=True,
-#                 node={'labelProperty': 'label'},
-#                 link={'labelProperty': 'label', 'renderLabel': True}
-#                 # **kwargs e.g. node_size=1000 or node_color="blue"
-#                 )
-
-
-# return_value = agraph(nodes=nodes,
-#                       edges=edges,
-#                       config=config)
-
-
-
-
-
-nodes.append(Node(id="Spiderman",
-                  label="Peter Parker",
-                  size=800,
-                  svg="http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png")
-             )  # includes **kwargs
-nodes.append(Node(id="Captain_Marvel",
-                  size=400,
-                  svg="http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainmarvel.png")
+for i in range(8):
+    nodes.append(
+        Node(id=input_df.iloc[i, 0],
+             label=input_df.iloc[i, 0],
+             size=800
              )
-edges.append(Edge(source="Captain_Marvel",
-                  label="friend_of",
-                  target="Spiderman",
+    )
+
+    edges.append(Edge(source=input_df.iloc[i, 0],
+                  label="connected to ",
+                  target=option_clean,
                   type="CURVE_SMOOTH",
-                  strokeWidth=4
+                  strokeWidth=1.5
 
                   )
-             )  # includes **kwargs
+             )  
 
-config = Config(width=500,
-                height=500,
+
+config = Config(width=800,
+                height=800,
                 directed=True,
-                nodeHighlightBehavior=True,
-                highlightColor="#F7A7A6",  # or "blue"
-                collapsible=True,
                 node={'labelProperty': 'label'},
                 link={'labelProperty': 'label', 'renderLabel': True}
                 # **kwargs e.g. node_size=1000 or node_color="blue"
                 )
 
+
 return_value = agraph(nodes=nodes,
                       edges=edges,
                       config=config)
+
+
+
+
+
+# nodes.append(Node(id="Spiderman",
+#                   label="Peter Parker",
+#                   size=800,
+#                   svg="http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_spiderman.png")
+#              )  # includes **kwargs
+# nodes.append(Node(id="Captain_Marvel",
+#                   size=400,
+#                   svg="http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_captainmarvel.png")
+#              )
+# edges.append(Edge(source="Captain_Marvel",
+#                   label="friend_of",
+#                   target="Spiderman",
+#                   type="CURVE_SMOOTH",
+#                   strokeWidth=4
+
+#                   )
+#              )  # includes **kwargs
+
+# config = Config(width=500,
+#                 height=500,
+#                 directed=True,
+#                 nodeHighlightBehavior=True,
+#                 highlightColor="#F7A7A6",  # or "blue"
+#                 collapsible=True,
+#                 node={'labelProperty': 'label'},
+#                 link={'labelProperty': 'label', 'renderLabel': True}
+#                 # **kwargs e.g. node_size=1000 or node_color="blue"
+#                 )
+
+# return_value = agraph(nodes=nodes,
+#                       edges=edges,
+#                       config=config)
