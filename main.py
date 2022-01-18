@@ -3,7 +3,6 @@ import spacy
 from spacy import displacy
 import streamlit.components.v1 as components
 import pandas as pd
-import networkx as nx
 from streamlit_agraph import agraph, Node, Edge, Config
 
 
@@ -295,12 +294,7 @@ if page == "Page 2":
 
 
 
-    def graph(input_df):
-        G=nx.from_pandas_edgelist(input_df.head(20+1), "source", "target", 
-                            edge_attr=True, create_using=nx.MultiDiGraph())
-        return G
 
-    G= graph(input_df)
 
 
     nodes_list = []
