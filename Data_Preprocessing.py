@@ -152,7 +152,6 @@ def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
     return expanded_text
 
 
-text_list = df.iloc[:,2].values
 
 
 
@@ -169,7 +168,7 @@ def normalize_docs(documents):
 
 
     
-list_normalized_text = normalize_docs(text_list)
+list_normalized_text = normalize_docs(df.iloc[:,2].values)
 
 df['text'] = list_normalized_text
 
