@@ -1,5 +1,10 @@
 import pandas as pd
 import re
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
+
 
 
 
@@ -151,6 +156,17 @@ def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
     expanded_text = re.sub("'", "", expanded_text)
     return expanded_text
 
+def expand_abbreviation(text):
+    nlp.add_pipe("abbreviation_detector")
+    text = "Spinal and bulbar muscular atrophy (SBMA) is an \
+           inherited motor neuron disease caused by the expansion \
+           of a polyglutamine tract within the androgen receptor (AR). \
+           SBMA can be caused by this easily."
+
+    doc = nlp(text)
+    for abrv in doc._.abbreviations:
+        text = text.replace(abrv.text,abrv._.long_form.text)
+        return text
 
 
 
@@ -162,6 +178,7 @@ def normalize_docs(documents):
         doc = expand_contractions(doc)
         doc = ' '.join(re.sub(' +', ' ',doc.replace('\'s','').replace('\'t','').replace('&lt;','').replace(">","")).split('\n')[1:]).strip().replace('  ',' ')
         doc = expand_contractions(doc)
+        doc = expand_abbreviation(doc)
         normalized_documents.append(doc)
     return normalized_documents
 
