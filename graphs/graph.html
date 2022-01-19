@@ -1,0 +1,123 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>Graph :)</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 50%;
+            height: 400px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Borden Inc", "label": "Borden Inc", "shape": "dot", "size": 10}, {"id": "Prince Co Inc", "label": "Prince Co Inc", "shape": "dot", "size": 10}, {"id": "it", "label": "it", "shape": "dot", "size": 10}, {"id": "sales", "label": "sales", "shape": "dot", "size": 10}, {"id": "companies", "label": "companies", "shape": "dot", "size": 10}, {"id": "180 mln dlrs", "label": "180 mln dlrs", "shape": "dot", "size": 10}, {"id": "line", "label": "line", "shape": "dot", "size": 10}, {"id": "Borden", "label": "Borden", "shape": "dot", "size": 10}, {"id": "have", "label": "have", "shape": "dot", "size": 10}, {"id": "Blue Channel Inc", "label": "Blue Channel Inc", "shape": "dot", "size": 10}, {"id": "produce", "label": "produce", "shape": "dot", "size": 10}, {"id": "in", "label": "in", "shape": "dot", "size": 10}, {"id": "230 mln dlrs", "label": "230 mln dlrs", "shape": "dot", "size": 10}, {"id": "285 mln dlrs", "label": "285 mln dlrs", "shape": "dot", "size": 10}, {"id": "It", "label": "It", "shape": "dot", "size": 10}, {"id": "account", "label": "account", "shape": "dot", "size": 10}, {"id": "last month", "label": "last month", "shape": "dot", "size": 10}, {"id": "Prince", "label": "Prince", "shape": "dot", "size": 10}, {"id": "for", "label": "for", "shape": "dot", "size": 10}, {"id": "brand", "label": "brand", "shape": "dot", "size": 10}, {"id": "basis", "label": "basis", "shape": "dot", "size": 10}, {"id": "divestment", "label": "divestment", "shape": "dot", "size": 10}, {"id": "process", "label": "process", "shape": "dot", "size": 10}, {"id": "which", "label": "which", "shape": "dot", "size": 10}, {"id": "emulsions", "label": "emulsions", "shape": "dot", "size": 10}, {"id": "sale", "label": "sale", "shape": "dot", "size": 10}, {"id": "buyer", "label": "buyer", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "Borden Inc", "relation": "said", "to": "Prince Co Inc", "weight": 1}, {"from": "it", "relation": "acquiring", "to": "Prince Co Inc", "weight": 1}, {"from": "it", "relation": "said", "to": "sales", "weight": 1}, {"from": "companies", "relation": "producing", "to": "180 mln dlrs", "weight": 1}, {"from": "companies", "relation": "expected", "to": "sales", "weight": 1}, {"from": "companies", "relation": "are", "to": "line", "weight": 1}, {"from": "Borden", "relation": "said", "to": "have", "weight": 1}, {"from": "Borden", "relation": "said", "to": "Blue Channel Inc", "weight": 1}, {"from": "Borden", "relation": "said", "to": "produce", "weight": 1}, {"from": "Borden", "relation": "said", "to": "in", "weight": 1}, {"from": "sales", "relation": "totaling", "to": "230 mln dlrs", "weight": 1}, {"from": "sales", "relation": "expected", "to": "285 mln dlrs", "weight": 1}, {"from": "It", "relation": "said", "to": "account", "weight": 1}, {"from": "It", "relation": "said", "to": "last month", "weight": 1}, {"from": "Prince", "relation": "expected", "to": "for", "weight": 1}, {"from": "brand", "relation": "distributed", "to": "basis", "weight": 1}, {"from": "divestment", "relation": "dlrs", "to": "sales", "weight": 1}, {"from": "divestment", "relation": "is", "to": "process", "weight": 1}, {"from": "which", "relation": "makes", "to": "emulsions", "weight": 1}, {"from": "sale", "relation": "announced by", "to": "buyer", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
