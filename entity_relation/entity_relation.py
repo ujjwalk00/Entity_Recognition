@@ -23,7 +23,7 @@ def find_rel(doc):
             relation.append(rel)
     input_df = pd.DataFrame({'source':subject, 'relation':relation, 'target': target})
     print(input_df)
-    input_df.to_csv("Assets/input-data-for-graph_1.csv", index= False)
+    #input_df.to_csv("Assets/input-data-for-graph_1.csv", index= False)
     return input_df
             
 def find_sub(pred):
@@ -73,4 +73,4 @@ def get_full_word(token, article):
         if token.i in range(words.start,words.end):
             return words.text
         
-    return token
+    return token.text
