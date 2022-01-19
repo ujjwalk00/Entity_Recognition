@@ -18,5 +18,5 @@ def get_ORG_category_relation(category: str):
 
     
 df = pd.read_excel("../Assets/preprocessed_text.xlsx")
-get_ORG_category_relation('ship)
+get_ORG_category_relation('ship')
 
