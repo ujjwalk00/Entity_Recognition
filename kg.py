@@ -62,11 +62,12 @@ for i in range(8):
              label=input_df.iloc[i, 0],
              size=800
              )
+
     )
 
     edges.append(Edge(source=input_df.iloc[i, 0],
-                  label="connected to ",
-                  target=option_clean,
+                  label=input_df.iloc[i, 1],
+                  target=input_df.iloc[i, 2],
                   type="CURVE_SMOOTH",
                   strokeWidth=1.5
 
