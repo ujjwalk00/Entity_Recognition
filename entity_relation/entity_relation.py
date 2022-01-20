@@ -41,7 +41,7 @@ def find_rel(doc, nlp):
         entities.add(rel[2])
     input_df = pd.DataFrame({"source": subject, "relation": relation, "target": target})
     # print(input_df)
-    input_df.to_csv("assets/input-data-for-graph_1.csv", index=False)
+    input_df.to_csv("assets/input-data-for-graph.csv", index=False)
     entity_df = pd.DataFrame(
         {
             "id": range(1, len(entities) + 1),
@@ -73,7 +73,7 @@ def find_obj(pred, article):
     # print("pred=",pred)
     for token in pred.rights:
       if token.dep_ != "punct" and token.dep_ in obj_dep:
-          print("obj",token)
+          # print("obj",token)
           obj = token
           break
     if obj == None:
