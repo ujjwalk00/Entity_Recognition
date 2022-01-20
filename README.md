@@ -45,6 +45,17 @@ Our manager at a consultancy agency has been overrun by an influx of projects th
 
 By reading the readme file you're able to get a clear description about the usage.
 
+
+## Visualization examples
+
+This knowledge graph shows us how the entities are related to eachother:
+![knowledge_graph](https://github.com/ujjwalk00/Entity_Recognition/blob/dev/assets/article_graph.png)
+
+This knowledge graph shows us how the entities are related to a certain category:
+![knowledge_graph](https://github.com/ujjwalk00/Entity_Recognition/blob/dev/assets/organisation_category_graph.png)
+
+
+
 ## Timeline
 
 *January 2022*
