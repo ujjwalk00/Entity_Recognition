@@ -1,4 +1,5 @@
 from re import A
+from tokenize import String
 import pandas as pd
 from spacy.matcher import Matcher
 
@@ -10,6 +11,8 @@ def find_rel(doc, nlp):
     entities = set()
     for token in doc:
         if token.dep_ == "ccomp" or token.dep_ == "ROOT" or token.pos_ == "VERB":
+            if token.text in ["said", "say"] and token.text in relation:
+                continue
             sub = find_sub(token)
             if token.nbor().dep_ in ["agent", "prep"]:
                 rel = " ".join([token.text, token.nbor().text])
@@ -37,8 +40,8 @@ def find_rel(doc, nlp):
         entities.add(rel[0])
         entities.add(rel[2])
     input_df = pd.DataFrame({"source": subject, "relation": relation, "target": target})
-    print(input_df)
-    input_df.to_csv("assets/input-data-for-graph_1.csv", index=False)
+    # print(input_df)
+    input_df.to_csv("assets/input-data-for-graph.csv", index=False)
     entity_df = pd.DataFrame(
         {
             "id": range(1, len(entities) + 1),
@@ -67,39 +70,41 @@ def find_sub(pred):
 def find_obj(pred, article):
     obj_dep = ["dobj", "pobj", "iobj", "obj", "obl"]
     obj = None
+    # print("pred=",pred)
     for token in pred.rights:
-        if token.dep_ != "punct":
-            if token.dep_ in obj_dep:
-                obj = token
-            elif token.dep_ == "ccomp":
-                return find_sub(token)
-            else:
-                for right in token.rights:
+        if token.dep_ != "punct" and token.dep_ in obj_dep:
+            # print("obj",token)
+            obj = token
+            break
+    if obj == None:
+        for token in pred.rights:
+            if token.dep_ != "punct":
+                if token.dep_ == "ccomp":
+                    obj = find_sub(token)
+                    break
+                else:
+                    # for right in token.rights:
+                    right = token
                     if right.dep_ == "xcomp":
-                        return find_obj(right, article)
+                        obj = find_obj(right, article)
+                        break
                     else:
                         if right.pos_ != "ADP":
                             obj = right
+                            break
                         else:
-                            return find_obj(right, article)
-        else:
-            break
-    for token in pred.lefts:
-        if token.dep_ == "ccomp":
-            return find_sub(token)
-    if obj != None:
+                            obj = find_obj(right, article)
+                            break
+
+    if obj == None:
+        for token in pred.lefts:
+            if token.dep_ == "ccomp":
+                obj = find_sub(token)
+    if obj != None and type(obj) != str:
         obj = get_full_word(obj, article)
+        # print("full word",obj)
 
     return obj
-
-
-def is_passive(token):
-    if token.dep_.endswith("pass"):  # noun
-        return True
-    for left in token.lefts:  # verb
-        if left.dep_ == "auxpass":
-            return True
-    return False
 
 
 def get_full_word(token, article):

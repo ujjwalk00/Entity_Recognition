@@ -16,9 +16,7 @@ nlp = spacy.load("en_core_web_sm")
 
 
 # Create a page dropdown
-page = st.selectbox("Select Category", [
-                    "Article based Graph", "Categorical Graph"])
-
+page = st.selectbox("Select Category", ["Article based Graph", "Categorical Graph"])
 
 
 if page == "Article based Graph":
@@ -55,16 +53,18 @@ if page == "Article based Graph":
                      color= 'green'
                      )
 
+
             )
 
-            edges.append(Edge(source=input_df.iloc[i, 0],
-                              label=input_df.iloc[i, 1],
-                              target=input_df.iloc[i, 2],
-                              type="STRAIGHT",
-                              strokeWidth=1.5
-
-                              )
-                         )
+            edges.append(
+                Edge(
+                    source=input_df.iloc[i, 0],
+                    label=input_df.iloc[i, 1],
+                    target=input_df.iloc[i, 2],
+                    type="STRAIGHT",
+                    strokeWidth=1.5,
+                )
+            )
 
         config = Config(width=1200,
                         height=700,
@@ -73,16 +73,13 @@ if page == "Article based Graph":
                         link={'labelProperty': 'label', 'renderLabel': True},
                         )
 
-        return_value = agraph(nodes=nodes,
-                              edges=edges,
-                              config=config)
+
+        return_value = agraph(nodes=nodes, edges=edges, config=config)
 
         st.dataframe(input_df)
 
 
-
 if page == "Categorical Graph":
-
 
     df = pd.read_excel("assets//" + "preprocessed_text.xlsx")
 
@@ -150,8 +147,8 @@ if page == "Categorical Graph":
                 }
             )
 
-
-    html_str = """
+    html_str = (
+        """
     <html>
     <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
@@ -203,8 +200,12 @@ if page == "Categorical Graph":
             var container = document.getElementById('mynetwork');
 
             // parsing and collecting nodes and edges from the python
-            nodes = new vis.DataSet(""" + str(nodes_list)+""");
-            edges = new vis.DataSet(""" + str(edges_list)+""");
+            nodes = new vis.DataSet("""
+        + str(nodes_list)
+        + """);
+            edges = new vis.DataSet("""
+        + str(edges_list)
+        + """);
 
             // adding nodes and edges to the graph
             data = {nodes: nodes, edges: edges};
@@ -258,6 +259,6 @@ if page == "Categorical Graph":
     </body>
     </html>
         """
+    )
 
-    components.html(html_str,
-                    height=1200, width=700)
+    components.html(html_str, height=1200, width=700)
