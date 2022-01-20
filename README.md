@@ -47,7 +47,7 @@ By reading the readme file you're able to get a clear description about the usag
 
 ## Timeline
 
-*October - November 2021*
+*January 2022*
 
 - Duration: `2 weeks`
-- Deadline: `20/01/2021 4:30 PM`
+- Deadline: `20/01/2022 4:30 PM`
