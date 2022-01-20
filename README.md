@@ -62,10 +62,10 @@ You can open url in browser and your application will load.
 
 ## Visualization examples
 
-This knowledge graph shows us how the entities are related to eachother:
+This knowledge graph shows us how the entities are related to eachother based on a single article:
 ![knowledge_graph](https://github.com/ujjwalk00/Entity_Recognition/blob/dev/assets/article_graph.png)
 
-This knowledge graph shows us how the entities are related to a certain category:
+This knowledge graph shows us how the entities from different articles are related to a certain category:
 ![knowledge_graph](https://github.com/ujjwalk00/Entity_Recognition/blob/dev/assets/organisation_category_graph.png)
 
 
