@@ -39,12 +39,26 @@ Our manager at a consultancy agency has been overrun by an influx of projects th
 
 ## Installation
 
-`git clone` this repository into your local environment. 
+- Clone this repository into your local environment with below command-
+
+  `git clone https://github.com/ujjwalk00/Entity_Recognition.git`
+
+- Create python virtual environment
+
+- Install all the required library with below command
+
+  `pip install -r requirements.txt`
 
 ## Usage
 
-By reading the readme file you're able to get a clear description about the usage.
+To run application with streamlit run main.py with below command.
 
+  `streamlit run main.py`
+Application withh open in browser automatically or you can also find application url in terminal like below
+
+![terminal](assets/streamlit_run.png)
+
+You can open url in browser and your application will load.
 
 ## Visualization examples
 
@@ -54,6 +68,10 @@ This knowledge graph shows us how the entities are related to eachother:
 This knowledge graph shows us how the entities are related to a certain category:
 ![knowledge_graph](https://github.com/ujjwalk00/Entity_Recognition/blob/dev/assets/organisation_category_graph.png)
 
+
+## Collaborators
+
+Design and construction phase of the project was made by 3 collaborators.([Ujjwal Kandel](https://github.com/UjjwalKandel2000), [Reena Koshta](https://github.com/reenakoshta10), and [Maryam El B](https://github.com/agilepydev))
 
 
 ## Timeline
