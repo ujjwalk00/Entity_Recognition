@@ -16,6 +16,9 @@ from entity_relation import *
 nlp = spacy.load('en_core_web_sm')
 
 
+
+
+# Create a page dropdown
 page = st.selectbox("Select Category", [
                     "Article based Graph", "Categorical Graph"])
 
@@ -33,7 +36,7 @@ if page == "Article based Graph":
         article = nlp(sentence)
 
 
-        input_df = find_rel(article)
+        input_df = find_rel(article,nlp)
 
         nodes = []
         edges = []
@@ -83,6 +86,7 @@ if page == "Article based Graph":
                               config=config)
 
         st.dataframe(input_df)
+
 
 
 if page == "Categorical Graph":
