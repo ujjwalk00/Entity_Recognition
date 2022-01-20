@@ -64,14 +64,14 @@ if page == "Page 1":
                     source=input_df.iloc[i, 0],
                     label=input_df.iloc[i, 1],
                     target=input_df.iloc[i, 2],
-                    type="CURVE_SMOOTH",
+                    type="STRAIGHT",
                     strokeWidth=1.5,
                 )
             )
 
         config = Config(
-            width=800,
-            height=800,
+            width=1500,
+            height=1500,
             directed=True,
             node={"labelProperty": "label"},
             link={"labelProperty": "label", "renderLabel": True}
