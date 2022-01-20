@@ -43,7 +43,7 @@ Our manager at a consultancy agency has been overrun by an influx of projects th
 
 ## Usage
 
-By reading the readme file you're able to get a clear description of the objective and final report on the sound project for Acme executed on the Clustering.ipynb file.
+By reading the readme file you're able to get a clear description about the usage.
 
 ## Timeline
 
