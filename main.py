@@ -41,7 +41,7 @@ if page == "Article based Graph":
                      label=input_df.iloc[i, 0],
                      size=1000,
                      labelPosition='right',
-                     color='red',
+                     color='green',
                      )
             )
 
@@ -103,7 +103,6 @@ if page == "Categorical Graph":
         }
     ).drop_duplicates()
 
-    st.dataframe(input_df)
     nodes_list = []
     edges_list = []
     nodes_list.append(
@@ -245,7 +244,7 @@ if page == "Categorical Graph":
 
             // if this network requires displaying the configure window,
             // put it in its div
-            options.configure["container"] = document.getElementById("config");
+          //  options.configure["container"] = document.getElementById("config");
 
             network = new vis.Network(container, data, options);
 
@@ -262,3 +261,6 @@ if page == "Categorical Graph":
     )
 
     components.html(html_str, height=1200, width=700)
+
+    st.dataframe(input_df)
+
