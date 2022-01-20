@@ -27,7 +27,7 @@ Our manager at a consultancy agency has been overrun by an influx of projects th
 
 * README.md -> Explains the project and gives a report
 
-* requirements.txt -> Shows information on what libraries and oython version to install/use.
+* requirements.txt -> Shows information on what libraries and python version to install/use.
 
 * main.py  -> Runs the streamlit application
 
