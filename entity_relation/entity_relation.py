@@ -10,9 +10,9 @@ def find_rel(doc, nlp):
     relation = []
     entities = set()
     for token in doc:
-        if (token.dep_ == "ccomp" or token.dep_ == "ROOT" or token.pos_ == "VERB"):
-            if token.text in ['said','say'] and token.text in relation:
-              continue
+        if token.dep_ == "ccomp" or token.dep_ == "ROOT" or token.pos_ == "VERB":
+            if token.text in ["said", "say"] and token.text in relation:
+                continue
             sub = find_sub(token)
             if token.nbor().dep_ in ["agent", "prep"]:
                 rel = " ".join([token.text, token.nbor().text])
@@ -72,21 +72,21 @@ def find_obj(pred, article):
     obj = None
     # print("pred=",pred)
     for token in pred.rights:
-      if token.dep_ != "punct" and token.dep_ in obj_dep:
-          # print("obj",token)
-          obj = token
-          break
+        if token.dep_ != "punct" and token.dep_ in obj_dep:
+            # print("obj",token)
+            obj = token
+            break
     if obj == None:
         for token in pred.rights:
             if token.dep_ != "punct":
                 if token.dep_ == "ccomp":
-                    obj= find_sub(token)
+                    obj = find_sub(token)
                     break
                 else:
                     # for right in token.rights:
                     right = token
                     if right.dep_ == "xcomp":
-                        obj= find_obj(right, article)
+                        obj = find_obj(right, article)
                         break
                     else:
                         if right.pos_ != "ADP":
@@ -95,16 +95,17 @@ def find_obj(pred, article):
                         else:
                             obj = find_obj(right, article)
                             break
-            
+
     if obj == None:
         for token in pred.lefts:
             if token.dep_ == "ccomp":
                 obj = find_sub(token)
-    if obj != None and type(obj)!= str:
+    if obj != None and type(obj) != str:
         obj = get_full_word(obj, article)
         # print("full word",obj)
 
     return obj
+
 
 def get_full_word(token, article):
     entities = [ent for ent in article.ents]
