@@ -16,7 +16,8 @@ nlp = spacy.load("en_core_web_sm")
 
 
 # Create a page dropdown
-page = st.selectbox("Select Category", ["Article based Graph", "Categorical Graph"])
+page = st.selectbox("Select Category", [
+                    "Article based Graph", "Categorical Graph"])
 
 
 if page == "Article based Graph":
@@ -50,7 +51,7 @@ if page == "Article based Graph":
                      label=input_df.iloc[i, 2],
                      size=1000,
                      labelPosition='left',
-                     color= 'green'
+                     color='green'
                      )
 
 
@@ -71,8 +72,7 @@ if page == "Article based Graph":
                         directed=True,
                         node={'labelProperty': 'label'},
                         link={'labelProperty': 'label', 'renderLabel': True},
-                        )
-
+                        collapsible=False)
 
         return_value = agraph(nodes=nodes, edges=edges, config=config)
 
@@ -83,7 +83,8 @@ if page == "Categorical Graph":
 
     df = pd.read_excel("assets//" + "preprocessed_text.xlsx")
 
-    option = st.selectbox("What category do you want to test?", df.categories.unique())
+    option = st.selectbox(
+        "What category do you want to test?", df.categories.unique())
     option_clean = option.replace("['", "").replace("']", "")
 
     st.write("You selected:", option_clean)
@@ -263,4 +264,3 @@ if page == "Categorical Graph":
     components.html(html_str, height=1200, width=700)
 
     st.dataframe(input_df)
-
