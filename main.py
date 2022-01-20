@@ -13,9 +13,7 @@ from streamlit_agraph import agraph, Node, Edge, Config
 from entity_relation import *
 
 
-nlp = spacy.load('en_core_web_sm')
-
-
+nlp = spacy.load("en_core_web_sm")
 
 
 # Create a page dropdown
@@ -26,17 +24,17 @@ page = st.selectbox("Select Category", [
 
 if page == "Article based Graph":
 
-    sentence = st.text_input('Input your sentence here:')
+    sentence = st.text_input("Input your sentence here:")
     if sentence:
-        st.write(sentence)
+        # st.write(sentence)
         sentence = normalize_docs_text(sentence)
-        st.write(sentence)
+        # st.write(sentence)
 
-        st.write(type(sentence))
+        # st.write(type(sentence))
         article = nlp(sentence)
 
-
-        input_df = find_rel(article,nlp)
+        input_df = find_rel(article, nlp)
+        st.dataframe(input_df)
 
         nodes = []
         edges = []
@@ -46,6 +44,7 @@ if page == "Article based Graph":
         for i in range(len_df):
 
             nodes.append(
+
                 Node(id=input_df.iloc[i, 0],
                      label=input_df.iloc[i, 0],
                      size=1300,
@@ -91,47 +90,73 @@ if page == "Article based Graph":
 
 if page == "Categorical Graph":
 
-    df = pd.read_excel("Assets//"+"preprocessed_text.xlsx")
 
-    option = st.selectbox(
-        'What category do you want to test?',
-        df.categories.unique())
+    df = pd.read_excel("assets//" + "preprocessed_text.xlsx")
+
+    option = st.selectbox("What category do you want to test?", df.categories.unique())
     option_clean = option.replace("['", "").replace("']", "")
 
-    st.write('You selected:', option_clean)
+    st.write("You selected:", option_clean)
 
-    data = df[df.categories == (option)]['text']
+    data = df[df.categories == (option)]["text"]
     entity_set = []
     for entity in data:
         article = nlp(entity)
         for ne in article.ents:
-            if ne.label_ == 'ORG':
+            if ne.label_ == "ORG":
                 entity_set.append(ne.text)
-    input_df = pd.DataFrame({'source': entity_set, 'relation': [
-                            'has article related to'] * len(entity_set), 'target': option_clean}).drop_duplicates()
+    input_df = pd.DataFrame(
+        {
+            "source": entity_set,
+            "relation": ["has article related to"] * len(entity_set),
+            "target": option_clean,
+        }
+    ).drop_duplicates()
 
     st.dataframe(input_df)
     nodes_list = []
     edges_list = []
     nodes_list.append(
-        {"id": option_clean, "label": option_clean, "shape": "dot", "size": 10})
+        {"id": option_clean, "label": option_clean, "shape": "dot", "size": 10}
+    )
     len_df = len(input_df)
     if len_df >= 21:
         for i in range(21):
             nodes_list.append(
-                {"id": input_df.iloc[i, 0], "label": input_df.iloc[i, 0], "shape": "dot", "size": 10})
+                {
+                    "id": input_df.iloc[i, 0],
+                    "label": input_df.iloc[i, 0],
+                    "shape": "dot",
+                    "size": 10,
+                }
+            )
             edges_list.append(
-                {"from": input_df.iloc[i, 0], "relation": input_df.iloc[i, 1], "to": option_clean, "weight": 1})
+                {
+                    "from": input_df.iloc[i, 0],
+                    "relation": input_df.iloc[i, 1],
+                    "to": option_clean,
+                    "weight": 1,
+                }
+            )
     else:
         for i in range(len_df):
             nodes_list.append(
-                {"id": input_df.iloc[i, 0], "label": input_df.iloc[i, 0], "shape": "dot", "size": 10})
+                {
+                    "id": input_df.iloc[i, 0],
+                    "label": input_df.iloc[i, 0],
+                    "shape": "dot",
+                    "size": 10,
+                }
+            )
             edges_list.append(
-                {"from": input_df.iloc[i, 0], "relation": input_df.iloc[i, 1], "to": option_clean, "weight": 1})
+                {
+                    "from": input_df.iloc[i, 0],
+                    "relation": input_df.iloc[i, 1],
+                    "to": option_clean,
+                    "weight": 1,
+                }
+            )
 
-
-    st.write(str(nodes_list))
-    st.write(str(edges_list))
 
     html_str = """
     <html>
@@ -160,7 +185,7 @@ if page == "Categorical Graph":
                 width: 1000px;
                 height: 600px;
             }
-            
+
     </style>
 
     </head>
@@ -176,16 +201,13 @@ if page == "Categorical Graph":
         // initialize global variables.
         var edges;
         var nodes;
-        var network; 
+        var network;
         var container;
         var options, data;
 
-        
         // This method is responsible for drawing the graph, returns the drawn network
         function drawGraph() {
             var container = document.getElementById('mynetwork');
-            
-            
 
             // parsing and collecting nodes and edges from the python
             nodes = new vis.DataSet(""" + str(nodes_list)+""");
@@ -226,14 +248,13 @@ if page == "Categorical Graph":
             }
         }
     };
-            
+
             // if this network requires displaying the configure window,
             // put it in its div
             options.configure["container"] = document.getElementById("config");
-            
 
             network = new vis.Network(container, data, options);
-        
+
             return network;
 
         }
