@@ -1,6 +1,5 @@
 import spacy
-from spacy import displacy
-from spacy.matcher import Matcher
+
 
 from entity_relation.entity_relation import *
 from text_preprocessing.Text_Preprocessing import *
@@ -26,15 +25,10 @@ if page == "Article based Graph":
 
     sentence = st.text_input("Input your sentence here:")
     if sentence:
-        # st.write(sentence)
         sentence = normalize_docs_text(sentence)
-        # st.write(sentence)
-
-        # st.write(type(sentence))
         article = nlp(sentence)
 
         input_df = find_rel(article, nlp)
-        st.dataframe(input_df)
 
         nodes = []
         edges = []
@@ -47,16 +41,16 @@ if page == "Article based Graph":
 
                 Node(id=input_df.iloc[i, 0],
                      label=input_df.iloc[i, 0],
-                     size=1300,
+                     size=1000,
                      labelPosition='right',
-                     color='green',
+                     color='red',
                      )
             )
 
             nodes.append(
                 Node(id=input_df.iloc[i, 2],
                      label=input_df.iloc[i, 2],
-                     size=1300,
+                     size=1000,
                      labelPosition='left',
                      color= 'green'
                      )
@@ -73,11 +67,10 @@ if page == "Article based Graph":
                          )
 
         config = Config(width=1200,
-                        height=1300,
+                        height=700,
                         directed=True,
                         node={'labelProperty': 'label'},
                         link={'labelProperty': 'label', 'renderLabel': True},
-                        node_size=1000
                         )
 
         return_value = agraph(nodes=nodes,
