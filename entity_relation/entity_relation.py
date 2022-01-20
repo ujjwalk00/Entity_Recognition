@@ -14,6 +14,8 @@ def find_rel(doc, nlp):
             if token.text in ["said", "say"] and token.text in relation:
                 continue
             sub = find_sub(token)
+            if token.i == len(doc)-1:
+              break
             if token.nbor().dep_ in ["agent", "prep"]:
                 rel = " ".join([token.text, token.nbor().text])
                 obj = find_obj(token.nbor(), doc)
