@@ -71,7 +71,7 @@ This knowledge graph shows us how the entities from different articles are relat
 
 ## Collaborators
 
-Design and construction phase of the project was made by 3 collaborators.([Ujjwal Kandel](https://github.com/UjjwalKandel2000), [Reena Koshta](https://github.com/reenakoshta10), and [Maryam El B](https://github.com/agilepydev))
+Design and construction phase of the project was made by 3 collaborators.([Ujjwal Kandel](https://github.com/Ujjwalk00), [Reena Koshta](https://github.com/reenakoshta10), and [Maryam El B](https://github.com/agilepydev))
 
 
 ## Timeline
